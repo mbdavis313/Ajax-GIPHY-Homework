@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>OMDB API</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <style>
+    #movie-section {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    article {
+      width: 12em;
+      margin: 1em;
+    }
+    h1.card-title {
+      font-size: 2em;
+    }
+    img {
+      width: 100%;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>Movies</h1>
+
+
+      Seach for Film <input id="film-name">
+      <button id="search">Add Film</button>
+
+
+  </div>
+
+  <div class="container" id="movie-section"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+
+  /* This version of the program adds a form for visitors to add additional movies to the page.
+
+* Step 1: Add a JQuery click handler for the button at the end of the script.
+
+* Step 2: Store the current value of the form field into a variable using JQuery.
+
+* Step 3: Call the function that does the AJAX call.
+
+### Hints
+
+* How is the new movie name pushed into the movieList array using plain JavaScript?
+
+### Bonus
+
+* Add typography CSS to implement a creative page design. */
+
+    // Store a list of movies to display on the page.
+    var movieList = [];
+
+    function createCard(response) {
+      // Create a new boostrap card container
+      var article = $("<article>");
+      article.addClass("card");
+
+      // Create an image elment, add attributes, and append to figure
+      var posterImage = $("<img>");
+      posterImage.attr("src", response.Poster);
+      posterImage.attr("alt", response.Title + " Poster");
+
+      var moviePoster = $("<figure>");
+      moviePoster.append(posterImage);
+      article.append(moviePoster);
+
+      // Create a new card body container
+      var cardBody = $("<div>");
+      cardBody.addClass("card-body");
+
+      // Add movie name
+      var movieName = $("<h1>");
+      movieName.addClass("card-title");
+      movieName.html(response.Title);
+      article.append(movieName);
+
+      // Add description
+      var movieDescription = $("<p>");
+      movieDescription.addClass("card-text");
+      movieDescription.html(response.Plot);
+      article.append(movieDescription);
+
+      // Append the new card to the HTML body
+      $("#movie-section").append(article);
+
+    }
+
+    function getMovie(movie) {
+
+      // queryURL endpoint for OMDB API
+      var queryURL = "https://www.omdbapi.com/?t=" + movie + "&apikey=trilogy";
+
+      // AJAX call to OBMD API with promise and callback handler
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      }).done(function(response) {
+        if (response.Response === "False") {
+          alert(response.Error);
+        }
+        else if (movieList.indexOf(response.Title) >= 0) {
+          alert ("Movie already in List!")
+        }
+        else {
+          createCard(response);
+          movieList.push(response.Title);
+        }
+      });
+
+    }
+
+    // Create a bootstrap card for each item in the movieList array
+
+    for (var i = 0; i < movieList.length; i++) {
+
+      var movie = movieList[i];
+      getMovie(movie);
+
+    }
+
+    //
+    // TO DO: Create button click handler to get the form submission,
+    // and call the AJAX function, passing the name of the new movie
+    //
+    // From line 35: <button id="search">Add Film</button>
+    $("#search").click(function(){
+    // From line 36: Seach for Film <input id="film-name">
+      $("#film-name").val("movie");
+  });
+    
+
+  </script>
+
+</body>
+
+</html>

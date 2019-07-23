@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Ajax-GIPHY Homework">
+  <meta name="keywords" content="HTML,CSS,XML,JavaScript">
+  <meta name="author" content="Marvin Davis">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <!-- Popper JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <!--CSS Stylesheet Only -->
+  <!--<link rel="stylesheet" href="styles.css">-->
+  <base href="https://www.w3schools.com/images/" target="_blank">
+</head>
+<body>
+<h1 id="movie-name"></h1>
+  <p id="movie-description"></p>
+  <figure id="movie-poster"></figure>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+  
+    // queryURL endpoint for OMDB API
+    var queryURL = "http://www.omdbapi.com/?t=The Tuskegee Airmen&apikey=trilogy";
+
+    // AJAX call to OBMD API with promise and callback handler
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    }).then(function(response) {
+
+      // Add movie name
+      $("#movie-name").html(response.Title);
+
+      // Add description
+      $("#movie-description").html(response.Plot);
+      
+      // Create an image elment, add src attribute, and append to figure
+      var posterImage = $("<img>");
+      posterImage.attr("src", response.Poster);
+      $("#movie-poster").append(posterImage);
+
+    });
+
+  </script>
+
+</body>
+</html>
